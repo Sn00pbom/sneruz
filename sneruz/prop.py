@@ -19,6 +19,9 @@ class Prop(object):
     def __bool__(self):
         return self.deduce()
 
+    def __str__(self):
+        return "T" if self.deduce() else "F"
+
     def deduce(self):
         return self._value
 
