@@ -19,7 +19,7 @@ class Prop(object):
     def deduce(self, *args):
         if self._f is None:
             raise ValueError
-        else
+        else:
             return self._f(*args)
 
     def set(self, value):
