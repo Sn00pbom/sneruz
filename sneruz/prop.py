@@ -4,26 +4,31 @@ from itertools import permutations
 
 class Prop(object):
 
-    def __init__(self, value: bool, froms: list=None):
+    def __init__(self, value=None):
         super().__init__()
 
-        if isinstance(froms, list):
-            self._froms = froms
-        elif isinstance(froms, Prop):
-            self._froms = [froms]
-        else:
-            self._froms = []
-
-        self._value = value
+        self._f = None
+        self.set(value)
 
     def __bool__(self):
         return self.deduce()
 
-    def __str__(self):
-        return "T" if self.deduce() else "F"
+    def __call__(self, *args):
+        return self.deduce(*args)
 
-    def deduce(self):
-        return self._value
+    def deduce(self, *args):
+        if self._f is None:
+            raise ValueError
+        else
+            return self._f(*args)
+
+    def set(self, value):
+        if isinstance(value, bool):
+            self._f = lambda: value
+        elif callable(value):
+            self._f = value
+        else:
+            self._f = None
 
     def is_tautology(self) -> bool:
         # a wff is a tautology if and only if it is true for all possible truth-value assignments to the statement letters making it up.
@@ -41,23 +46,29 @@ class Prop(object):
         # a wff β is said to be a logical consequence of a set of wffs α1, α2, ..., αn, if and only if there is no truth-value assignment to the statement letters making up these wffs that makes all of α1, α2, ..., αn true but does not make β true.
         return True
 
-    def NOT(p: Prop) -> Prop:
-        return Prop(bool(not p), p)
+    def Not(p: Prop) -> Prop:
+        # return Prop(bool(not p))
+        return Prop(lambda: not p())
 
-    def AND(p: Prop, q: Prop) -> Prop:
-        return Prop(bool(p and q), [p, q])
+    def And(p: Prop, q: Prop) -> Prop:
+        # return Prop(bool(p and q))
+        return Prop(lambda: p() and q())
 
-    def OR(p, q: Prop) -> Prop:
-        return Prop(bool(p or q), [p, q])
+    def Or(p, q: Prop) -> Prop:
+        # return Prop(bool(p or q))
+        return Prop(lambda: p() or q())
 
-    def XOR(p, q: Prop) -> Prop:
-        return Prop(bool((p and not q) or (not p and q)), [p, q])
+    def Xor(p, q: Prop) -> Prop:
+        # return Prop(bool((p and not q) or (not p and q)))
+        return Prop(lambda: ((p() and not q()) or (not p() and q())))
 
-    def IMPLIES(p, q: Prop) -> Prop:
-        return Prop(bool((not p) or (p and q)), [p, q])
+    def Implies(p, q: Prop) -> Prop:
+        # return Prop(bool((not p) or (p and q)))
+        return Prop(lambda: ((not p()) or (p() and q())))
 
-    def IFF(p, q: Prop) -> Prop:
-        return Prop(bool(((not p and not q) or (p and q))), [p, q])
+    def Iff(p, q: Prop) -> Prop:
+        # return Prop(bool(((not p and not q) or (p and q))))
+        return Prop(lambda: ((not p() and not q()) or (p() and q())))
 
     @staticmethod
     def is_consistent(wff1, wff2) -> bool:
