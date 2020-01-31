@@ -5,4 +5,8 @@ class Error(Exception):
 
 
 class TruthAssignmentError(Error):
-    """Exception raised when a deduction is attempted with no truth assignment"""
+    """Raised when a deduction is attempted with no truth assignment"""
+
+
+class TableFormatError(Error):
+    """Raised when a inconsistency in table size/shape is present"""
