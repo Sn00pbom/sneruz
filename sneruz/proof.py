@@ -5,7 +5,7 @@ class Proof(object):
     def __init__(self):
         super().__init__()
         self.steps = []
-        self.conditions = []
+        self.premises = []
 
     def __len__(self):
         return len(self.steps)
@@ -13,10 +13,10 @@ class Proof(object):
     def __getitem__(self, key):
         return self.steps[key-1]
 
-    def condition(self, prop):
-        """Add a proposition as a step and a condition"""
+    def suppose(self, prop):
+        """Add a proposition as a step and a premise"""
         self.steps.append(prop)
-        self.conditions.append(prop)
+        self.premises.append(prop)
     
     def therefore(self, prop):
         """Add a proposition as a step"""
