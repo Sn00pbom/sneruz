@@ -1,5 +1,6 @@
 from __future__ import annotations
-from itertools import permutations
+
+from sneruz.errors import TruthAssignmentError
 
 
 class Prop(object):
@@ -18,7 +19,7 @@ class Prop(object):
 
     def deduce(self, *args):
         if self._f is None:
-            raise ValueError
+            raise TruthAssignmentError(self)
         else:
             return self._f(*args)
 
