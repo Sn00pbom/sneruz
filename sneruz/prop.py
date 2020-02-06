@@ -25,7 +25,7 @@ class Prop(object):
 
     def set(self, value):
         if isinstance(value, bool):
-            self._f = lambda: value
+            self._f = lambda *a: value
         elif callable(value):
             self._f = value
         else:
@@ -49,27 +49,43 @@ class Prop(object):
 
     def Not(p: Prop) -> Prop:
         # return Prop(bool(not p))
-        return Prop(lambda: not p())
+        return Prop(lambda *a: not p(*a))
 
     def And(p: Prop, q: Prop) -> Prop:
         # return Prop(bool(p and q))
-        return Prop(lambda: p() and q())
+        return Prop(lambda *a: p(*a) and q(*a))
 
     def Or(p, q: Prop) -> Prop:
         # return Prop(bool(p or q))
-        return Prop(lambda: p() or q())
+        return Prop(lambda *a: p(*a) or q(*a))
 
     def Xor(p, q: Prop) -> Prop:
         # return Prop(bool((p and not q) or (not p and q)))
-        return Prop(lambda: ((p() and not q()) or (not p() and q())))
+        return Prop(lambda *a: ((p(*a) and not q(*a)) or (not p(*a) and q(*a))))
 
     def Implies(p, q: Prop) -> Prop:
         # return Prop(bool((not p) or (p and q)))
-        return Prop(lambda: ((not p()) or (p() and q())))
+        return Prop(lambda *a: ((not p(*a)) or (p(*a) and q(*a))))
 
     def Iff(p, q: Prop) -> Prop:
         # return Prop(bool(((not p and not q) or (p and q))))
-        return Prop(lambda: ((not p() and not q()) or (p() and q())))
+        return Prop(lambda *a: ((not p(*a) and not q(*a)) or (p(*a) and q(*a))))
+
+    def Forall(p, d):
+        def fa(*a):
+            for x in d:
+                if not p(*a, x):
+                    return False
+            return True
+        return Prop(lambda *a: fa(*a))
+
+    def Exists(p, d):
+        def ex(*a):
+            for x in d:
+                if p(*a, x):
+                    return True
+            return False
+        return Prop(lambda *a: ex(*a))
 
     @staticmethod
     def is_consistent(wff1, wff2) -> bool:
