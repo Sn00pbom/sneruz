@@ -13,6 +13,9 @@ class Proof(object):
     def __getitem__(self, key):
         return self.steps[key-1]
 
+    def __iter__(self):
+        return iter(self.steps)
+
     def suppose(self, prop):
         """Add a proposition as a step and a premise"""
         self.steps.append(prop)
