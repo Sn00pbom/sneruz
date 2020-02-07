@@ -12,7 +12,7 @@
      \__\/         \__\/         \__\/         \__\/         \__\/         |__|/             
 ```
 ---
-A First-order logic library written in python
+A first-order logic library written in Python
 
 ## Installation
 Note: Requires Python 3.6 or greater

@@ -9,7 +9,7 @@ setuptools.setup(
     license="MIT",
     author="Zachary Lefin",
     author_email="zachlefin@gmail.com",
-    description="A logic library",
+    description="A first-order logic library",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Sn00pbom/sneruz",
